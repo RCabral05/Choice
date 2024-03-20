@@ -65,7 +65,7 @@ export const Index = () => {
     setSheets(updatedSheets);
   };
   
-  // USE THE SEARCH TO FILTER DATA
+  // USE THE SEARCH INPUT TO FILTER DATA
   const filteredData = sheets[activeSheetIndex]?.data.slice(1).filter(row => {
     return row.some(cell => cell?.toString().toLowerCase().includes(searchQuery));
   });
