@@ -1,5 +1,4 @@
-// Index.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import { DropzoneComponent } from '../DropZone/DropZoneComponent';
 import { parseExcelFile } from '../../utils/excelUtils.js';
@@ -7,6 +6,7 @@ import { parseExcelFile } from '../../utils/excelUtils.js';
 export const Index = () => {
   const [sheets, setSheets] = useState([]);
   const [activeSheetIndex, setActiveSheetIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -14,7 +14,6 @@ export const Index = () => {
       .then((extractedSheets) => {
         const sortedSheets = extractedSheets.sort((a, b) => a.name.localeCompare(b.name));
         setSheets(sortedSheets);
-        // Set the active sheet to the first sheet by default
         setActiveSheetIndex(0);
       })
       .catch((error) => {
@@ -27,10 +26,17 @@ export const Index = () => {
     setActiveSheetIndex(parseInt(selectedIndex, 10));
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
+
+  const filteredData = sheets[activeSheetIndex]?.data.slice(1).filter(row => {
+    return row.some(cell => cell?.toString().toLowerCase().includes(searchQuery));
+  });
+
   return (
     <div className="sheets">
-        <DropzoneComponent onDrop={handleDrop} />
-
+      <DropzoneComponent onDrop={handleDrop} />
       <div className="sheets-container">
         <div className="sheets-navigation">
           <label htmlFor="sheet-dropdown">Select Sheet:</label>
@@ -41,6 +47,12 @@ export const Index = () => {
               </option>
             ))}
           </select>
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
         <div className="sheets-content">
           <h2>{sheets[activeSheetIndex]?.name}</h2>
@@ -53,7 +65,7 @@ export const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {sheets[activeSheetIndex]?.data.slice(1).map((row, rowIndex) => (
+              {filteredData?.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {row.map((cell, cellIndex) => (
                     <td key={cellIndex}>{cell}</td>
@@ -61,10 +73,11 @@ export const Index = () => {
                 </tr>
               ))}
             </tbody>
-
           </table>
         </div>
       </div>
     </div>
   );
 };
+
+export default Index;
