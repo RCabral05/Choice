@@ -7,6 +7,7 @@ export const Index = () => {
   const [sheets, setSheets] = useState([]);
   const [activeSheetIndex, setActiveSheetIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingRowIndex, setEditingRowIndex] = useState(null);
 
   const handleDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -29,6 +30,37 @@ export const Index = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
+
+  const handleEdit = (rowIndex) => {
+    setEditingRowIndex(rowIndex);
+  };
+
+  const handleSave = (rowIndex) => {
+    setEditingRowIndex(null);
+    // Here you can also implement functionality to persist the edited data
+  };
+
+  const handleChange = (rowIndex, cellIndex, value) => {
+    const updatedSheets = sheets.map((sheet, sIndex) => {
+      if (sIndex === activeSheetIndex) {
+        // Cloning the sheet data to a new array for immutability
+        const updatedData = sheet.data.map((row, rIndex) => {
+          // Adjusting rowIndex by 1 due to header row
+          if (rIndex === rowIndex + 1) {
+            return row.map((cell, cIndex) => cIndex === cellIndex ? value : cell);
+          }
+          return row;
+        });
+        return { ...sheet, data: updatedData };
+      }
+      return sheet;
+    });
+  
+    setSheets(updatedSheets);
+  };
+  
+  
+  
 
   const filteredData = sheets[activeSheetIndex]?.data.slice(1).filter(row => {
     return row.some(cell => cell?.toString().toLowerCase().includes(searchQuery));
@@ -65,13 +97,33 @@ export const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData?.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((cell, cellIndex) => (
-                    <td key={cellIndex}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
+            {filteredData?.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {row.map((cell, cellIndex) => (
+                  <td key={cellIndex}>
+                    {editingRowIndex === rowIndex ? (
+                      <input 
+                        type="text"
+                        value={cell ?? ""} // Ensures the value is never null or undefined
+                        onChange={(e) => handleChange(rowIndex, cellIndex, e.target.value)}
+                      />
+                    ) : (
+                      cell ?? "" // Also ensures cell data is displayed even if null/undefined
+                    )}
+                  </td>
+                ))}
+                {editingRowIndex === rowIndex ? (
+                  <td>
+                    <button onClick={() => handleSave(rowIndex)}>Save</button>
+                  </td>
+                ) : (
+                  <td>
+                    <button onClick={() => handleEdit(rowIndex)}>Edit</button>
+                  </td>
+                )}
+              </tr>
+            ))}
+
             </tbody>
           </table>
         </div>
