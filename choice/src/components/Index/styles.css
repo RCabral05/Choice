@@ -28,9 +28,11 @@ label {
   }
   
   .sheets-content {
+    max-height: 500px; /* Adjust based on your needs */
+    overflow-y: auto;
     width: 100%;
-    overflow-x: auto;
   }
+  
   
   .sheets-content table {
     width: 100%;
@@ -45,5 +47,11 @@ label {
   
   .sheets-content th {
     background-color: #f2f2f2;
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 100; /* Ensure the header is above other content */
   }
   
