@@ -9,6 +9,7 @@ export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingRowIndex, setEditingRowIndex] = useState(null);
 
+  // UPLOAD EXCEL FILE
   const handleDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
     parseExcelFile(file)
@@ -22,24 +23,29 @@ export const Index = () => {
       });
   };
 
+  // SELECT SHEET TO VIEW
   const changeActiveSheet = (event) => {
     const selectedIndex = event.target.value;
     setActiveSheetIndex(parseInt(selectedIndex, 10));
   };
 
+  // SEARCH DATA ON SPECIFIED SHEET
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
+  // EDIT DATA ON SPECIFIED SHEET
   const handleEdit = (rowIndex) => {
     setEditingRowIndex(rowIndex);
   };
 
+  // SAVE DATA AFTER EDITING
   const handleSave = (rowIndex) => {
     setEditingRowIndex(null);
     // Here you can also implement functionality to persist the edited data
   };
 
+  // HANDLE THE NEW DATA AFTER EDITITNG
   const handleChange = (rowIndex, cellIndex, value) => {
     const updatedSheets = sheets.map((sheet, sIndex) => {
       if (sIndex === activeSheetIndex) {
@@ -59,9 +65,7 @@ export const Index = () => {
     setSheets(updatedSheets);
   };
   
-  
-  
-
+  // USE THE SEARCH TO FILTER DATA
   const filteredData = sheets[activeSheetIndex]?.data.slice(1).filter(row => {
     return row.some(cell => cell?.toString().toLowerCase().includes(searchQuery));
   });
