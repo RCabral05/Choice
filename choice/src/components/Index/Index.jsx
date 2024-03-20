@@ -83,6 +83,7 @@ export const Index = () => {
               </option>
             ))}
           </select>
+          <label htmlFor="sheet-dropdown">Search Sheet:</label>
           <input 
             type="text" 
             placeholder="Search..." 
