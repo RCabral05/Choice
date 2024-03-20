@@ -1,0 +1,49 @@
+/* styles.css */
+.sheets{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sheets-container {
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+}
+  
+.sheets-navigation {
+    margin-bottom: 20px;
+}
+  
+label {
+    font-weight: bold;
+}
+  
+  #sheet-dropdown {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .sheets-content {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .sheets-content table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .sheets-content th, .sheets-content td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .sheets-content th {
+    background-color: #f2f2f2;
+  }
+  
