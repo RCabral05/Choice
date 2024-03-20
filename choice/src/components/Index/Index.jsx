@@ -61,6 +61,7 @@ export const Index = () => {
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       </div>

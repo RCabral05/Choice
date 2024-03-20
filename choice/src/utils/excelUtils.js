@@ -1,4 +1,3 @@
-// utils/excelUtils.js
 import * as XLSX from 'xlsx';
 
 export const parseExcelFile = (file) => {
@@ -11,7 +10,7 @@ export const parseExcelFile = (file) => {
       const sheetNames = workbook.SheetNames;
       const extractedSheets = sheetNames.map((sheetName) => {
         const worksheet = workbook.Sheets[sheetName];
-        return { name: sheetName, data: XLSX.utils.sheet_to_json(worksheet, { header: 1 }) };
+        return { name: sheetName, data: XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null }) };
       });
 
       resolve(extractedSheets);
